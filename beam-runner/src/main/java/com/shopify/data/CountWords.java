@@ -24,7 +24,8 @@ public class CountWords
     private static final Logger LOG = LoggerFactory.getLogger(CountWords.class);
 
     public static void main(String[] args) {
-        PipelineOptions options = PipelineOptionsFactory.fromArgs(args).withValidation().create();
+        PipelineOptionsFactory.register(MyOptions.class);
+        MyOptions options = PipelineOptionsFactory.fromArgs(args).withValidation().create().as(MyOptions.class);
         LOG.info(options.toString());
 
         Pipeline p = Pipeline.create(options);
@@ -46,7 +47,7 @@ public class CountWords
                 .apply(MapElements.via((KV<String, Long> entry) -> entry.getKey() + ", " + entry.getValue())
                         .withOutputType(new TypeDescriptor<String>() {
                         }))
-                .apply(TextIO.Write.to("/tmp/out.txt"));
+                .apply(TextIO.Write.to(options.getOutputPath()));
 
         p.run();
     }
