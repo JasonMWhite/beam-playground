@@ -1,8 +1,8 @@
 package com.shopify.data;
 
-import org.apache.beam.sdk.options.PipelineOptions;
+import org.apache.beam.runners.spark.SparkPipelineOptions;
 
-interface MyOptions extends PipelineOptions {
+interface MyOptions extends SparkPipelineOptions {
     String getInputPath();
     void setInputPath(String value);
 
